@@ -1,0 +1,14 @@
+{
+  "accelerate": {
+    "entries": {
+      "Explosive": "爆发",
+      "Controlled": "掌控",
+      "Lengthy": "漫长"
+    },
+    "sectionHeading": "AcceleRATE & Chemistry",
+    "sectionHeadingTranslation": "加速类型 和 化学",
+    "communityTop3Text": "Top 3 community voted",
+    "communityTop3Translation": "投票前三的化学选择",
+    "AcceleRATE": "加速类型"
+  }
+}

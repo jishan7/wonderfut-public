@@ -1,0 +1,57 @@
+{
+  "manifest_version": 3,
+  "name": "文达WonderFut-攻略站翻译机网络优化版",
+  "description": "将FC UT 攻略站 Futbin Futgg 的英文名词翻译为中文.",
+  "version": "0.1.14",
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.futbin.com/*",
+        "https://futbin.com/*",
+        "https://www.fut.gg/*",
+        "https://fut.gg/*"
+      ],
+      "js": [
+        "src/content/dictionaryLoader.js",
+        "src/content/baseInfoTranslator.js",
+        "src/content/sixStatTranslator.js",
+        "src/content/roleTranslator.js",
+        "src/content/squadTranslator.js",
+        "src/content/chemistryTranslator.js",
+        "src/content/playstylesTranslator.js",
+        "src/content/evolutionsTranslator.js",
+        "src/content/futggEvoLab.js",
+        "src/content/futggEvolutionsTranslator.js",
+        "src/content/futbinPlayerStats.js",
+        "src/content/contentScript.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "src/background/remoteFetchProxy.js",
+    "type": "module"
+  },
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://gitee.com/*",
+    "https://raw.giteeusercontent.com/*"
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "data/futbinBasicInfoFromExcel.json",
+        "data/sixStat.json",
+        "data/futbinRolesFromExcel.json",
+        "data/futbinSquadFromExcel.json",
+        "data/futbinChemistryFromExcel.json",
+        "data/futbinPlaystylesFromExcel.json",
+        "data/evolutions.json",
+        "data/futggEvoLab.json",
+        "data/futbinPlayerStats.json",
+        "data/others.json"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

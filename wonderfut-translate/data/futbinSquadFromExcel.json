@@ -1,0 +1,170 @@
+{
+  "Festival of Football Captains": {
+    "professional": "足球庆典：队长",
+    "playerSlang": "队长卡"
+  },
+  "Star Performer": {
+    "professional": "璀璨明星",
+    "playerSlang": "璀璨明星"
+  },
+  "UEL Primetime": {
+    "professional": "UEFA Europa League 黄金时刻",
+    "playerSlang": "欧罗巴联赛黄金时刻"
+  },
+  "UECL Primetime": {
+    "professional": "UEFA Conference League 黄金时刻",
+    "playerSlang": "欧协联黄金时刻"
+  },
+  "UCL Primetime": {
+    "professional": "UEFA Champions League 黄金时刻",
+    "playerSlang": "欧冠黄金时刻"
+  },
+  "UWCL Primetime": {
+    "professional": "UEFA Women's Champions League 黄金时刻",
+    "playerSlang": "女子欧冠黄金时刻"
+  },
+  "UWCL Primetime Heroes": {
+    "professional": "UWCL黄金时刻英雄",
+    "playerSlang": "女子欧冠黄金时刻英雄"
+  },
+  "UCL Primetime Heroes": {
+    "professional": "UCL黄金时刻英雄",
+    "playerSlang": "欧冠黄金时刻英雄"
+  },
+  "Ultimate Scream Hero": {
+    "professional": "Ultimate Scream英雄",
+    "playerSlang": "尖叫英雄"
+  },
+  "Ultimate Scream": {
+    "professional": "Ultimate Scream",
+    "playerSlang": "尖叫卡"
+  },
+  "End or Era": {
+    "professional": "时代末章",
+    "playerSlang": "时代终结"
+  },
+  "Season Ladder Excellence": {
+    "professional": "赛季天梯卓越",
+    "playerSlang": "赛季天梯卓越"
+  },
+  "Ratings Reload": {
+    "professional": "评分重载",
+    "playerSlang": "评分重载"
+  },
+  "Champions": {
+    "professional": "冠军卡",
+    "playerSlang": "冠军卡"
+  },
+  "Virtual Bundesliga": {
+    "professional": "虚拟德甲",
+    "playerSlang": "虚拟德甲"
+  },
+  "Cornerstones": {
+    "professional": "基石",
+    "playerSlang": "基石"
+  },
+  "Showdown Plus": {
+    "professional": "大决战升级",
+    "playerSlang": "大决战"
+  },
+  "Moments": {
+    "professional": "时刻",
+    "playerSlang": "时刻"
+  },
+  "Flashback": {
+    "professional": "闪耀",
+    "playerSlang": "闪回"
+  },
+  "World Tour Silver Stars": {
+    "professional": "世界巡回白银巨星",
+    "playerSlang": "世界巡回白银巨星"
+  },
+  "World Tour": {
+    "professional": "世界巡回",
+    "playerSlang": "世界巡回"
+  },
+  "Squad Foundations": {
+    "professional": "阵容基础",
+    "playerSlang": "阵容基础"
+  },
+  "Heroes": {
+    "professional": "英雄",
+    "playerSlang": "英雄"
+  },
+  "Team of the Week": {
+    "professional": "本周最佳阵容（TOTW）",
+    "playerSlang": "周黑"
+  },
+  "TOTW": {
+    "professional": "本周最佳阵容",
+    "playerSlang": "周黑"
+  },
+  "Icon": {
+    "professional": "超级巨星",
+    "playerSlang": "传奇"
+  },
+  "Champion Icon": {
+    "professional": "冠军版超级巨星",
+    "playerSlang": "冠军版传奇"
+  },
+  "Debut Icon": {
+    "professional": "初登场超级巨星",
+    "playerSlang": "初登场传奇"
+  },
+  "All Icons": {
+    "professional": "所有超级巨星",
+    "playerSlang": "所有传奇"
+  },
+  "Non-Icons": {
+    "professional": "所有非超级巨星",
+    "playerSlang": "所有非传奇"
+  },
+  "Gold": {
+    "professional": "黄金",
+    "playerSlang": "黄金"
+  },
+  "Silver": {
+    "professional": "白银",
+    "playerSlang": "白银"
+  },
+  "Bronze": {
+    "professional": "青铜",
+    "playerSlang": "青铜"
+  },
+  "All Gold": {
+    "professional": "全部黄金",
+    "playerSlang": "全部黄金"
+  },
+  "Gold Rare": {
+    "professional": "黄金 稀有",
+    "playerSlang": "黄金 稀有"
+  },
+  "Gold Non-rare": {
+    "professional": "黄金 普通",
+    "playerSlang": "黄金 普通"
+  },
+  "All Silver": {
+    "professional": "全部白银",
+    "playerSlang": "全部白银"
+  },
+  "Silver Rare": {
+    "professional": "白银 稀有",
+    "playerSlang": "白银 稀有"
+  },
+  "Silver Non-rare": {
+    "professional": "白银 普通",
+    "playerSlang": "白银 普通"
+  },
+  "All Bronze": {
+    "professional": "全部青铜",
+    "playerSlang": "全部青铜"
+  },
+  "Bronze Rare": {
+    "professional": "青铜 稀有",
+    "playerSlang": "青铜 稀有"
+  },
+  "Bronze Non-rare": {
+    "professional": "青铜非稀有",
+    "playerSlang": "青铜 普通"
+  }
+}

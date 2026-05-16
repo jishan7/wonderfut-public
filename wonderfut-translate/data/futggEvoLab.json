@@ -1,0 +1,27 @@
+{
+  "ALL EVOS": {
+    "professional": "全部进化",
+    "playerSlang": "全部进化"
+  },
+  "APPLY UPGRADES": {
+    "professional": "应用效果",
+    "playerSlang": "应用效果"
+  },
+  "CHECK ELIGIBILITY": {
+    "professional": "检查可用性",
+    "playerSlang": "检查可用性"
+  },
+  "HIDE EXPIRED": {
+    "professional": "隐藏过期",
+    "playerSlang": "隐藏过期"
+  },
+  "HIDE USED EVOLUTIONS": {
+    "professional": "隐藏已用进化",
+    "playerSlang": "隐藏已用进化"
+  },
+  "SHOW PRICES": {
+    "professional": "显示价格",
+    "playerSlang": "显示价格"
+  }
+}
+

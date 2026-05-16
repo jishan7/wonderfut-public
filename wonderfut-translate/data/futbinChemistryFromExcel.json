@@ -1,0 +1,94 @@
+{
+  "Wall": {
+    "professional": "铜墙铁壁",
+    "playerSlang": "铜墙铁壁"
+  },
+  "Glove": {
+    "professional": "手套",
+    "playerSlang": "手套"
+  },
+  "Shield": {
+    "professional": "盾",
+    "playerSlang": "盾"
+  },
+  "Cat": {
+    "professional": "猫",
+    "playerSlang": "猫"
+  },
+  "Anchor": {
+    "professional": "中流砥柱",
+    "playerSlang": "锚"
+  },
+  "Architect": {
+    "professional": "建筑师",
+    "playerSlang": "建筑师"
+  },
+  "Artist": {
+    "professional": "艺术家",
+    "playerSlang": "艺术家"
+  },
+  "Backbone": {
+    "professional": "主心骨",
+    "playerSlang": "主心骨"
+  },
+  "Basic": {
+    "professional": "基础",
+    "playerSlang": "基础"
+  },
+  "Catalyst": {
+    "professional": "催化剂",
+    "playerSlang": "催化剂"
+  },
+  "Deadeye": {
+    "professional": "神枪手",
+    "playerSlang": "死眼"
+  },
+  "Engine": {
+    "professional": "发动机",
+    "playerSlang": "引擎"
+  },
+  "Finisher": {
+    "professional": "终结者",
+    "playerSlang": "终结者"
+  },
+  "Gladiator": {
+    "professional": "角斗士",
+    "playerSlang": "角斗士"
+  },
+  "Guardian": {
+    "professional": "守护者",
+    "playerSlang": "守护者"
+  },
+  "Hawk": {
+    "professional": "鹰",
+    "playerSlang": "鹰"
+  },
+  "Hunter": {
+    "professional": "猎手",
+    "playerSlang": "猎手"
+  },
+  "Maestro": {
+    "professional": "大师",
+    "playerSlang": "大师"
+  },
+  "Marksman": {
+    "professional": "神射手",
+    "playerSlang": "神射手"
+  },
+  "Powerhouse": {
+    "professional": "发动机",
+    "playerSlang": "发动机"
+  },
+  "Sentinel": {
+    "professional": "哨兵",
+    "playerSlang": "哨兵"
+  },
+  "Shadow": {
+    "professional": "影子",
+    "playerSlang": "影子"
+  },
+  "Sniper": {
+    "professional": "狙击手",
+    "playerSlang": "狙击手"
+  }
+}

@@ -1,0 +1,150 @@
+{
+  "Finesse Shot": {
+    "professional": "推射",
+    "playerSlang": "搓射"
+  },
+  "Chip Shot": {
+    "professional": "吊射",
+    "playerSlang": "吊射"
+  },
+  "Power Shot": {
+    "professional": "大力射门",
+    "playerSlang": "大力射门"
+  },
+  "Dead Ball": {
+    "professional": "死球",
+    "playerSlang": "定位球射门"
+  },
+  "Precision Header": {
+    "professional": "精准头球",
+    "playerSlang": "头球射门"
+  },
+  "Acrobatic": {
+    "professional": "杂耍",
+    "playerSlang": "花式射门"
+  },
+  "Low Driven Shot": {
+    "professional": "大力低射",
+    "playerSlang": "低射"
+  },
+  "Game Changer": {
+    "professional": "颠覆者",
+    "playerSlang": "外脚背射门"
+  },
+  "Gamechanger": {
+    "professional": "颠覆者",
+    "playerSlang": "外脚背射门"
+  },
+  "Whipped Pass": {
+    "professional": "弧线传中",
+    "playerSlang": "弧线传中"
+  },
+  "Inventive": {
+    "professional": "别出心裁(独辟蹊径)",
+    "playerSlang": "花哨传球"
+  },
+  "Tiki Taka": {
+    "professional": "Tiki Taka",
+    "playerSlang": "Tiki Taka"
+  },
+  "Long Ball Pass": {
+    "professional": "远距离传球",
+    "playerSlang": "长传"
+  },
+  "Pinged Pass": {
+    "professional": "大力传球",
+    "playerSlang": "大力传球"
+  },
+  "Incisive Pass": {
+    "professional": "切入传球",
+    "playerSlang": "直塞"
+  },
+  "Jockey": {
+    "professional": "跟防",
+    "playerSlang": "螃蟹步"
+  },
+  "Block": {
+    "professional": "封堵",
+    "playerSlang": "封堵"
+  },
+  "Intercept": {
+    "professional": "拦截",
+    "playerSlang": "钩子"
+  },
+  "Anticipate": {
+    "professional": "预判",
+    "playerSlang": "狐狸"
+  },
+  "Slide Tackle": {
+    "professional": "滑铲",
+    "playerSlang": "滑铲"
+  },
+  "Aerial Fortress": {
+    "professional": "空中堡垒",
+    "playerSlang": "空中堡垒"
+  },
+  "Technical": {
+    "professional": "技术",
+    "playerSlang": "游龙"
+  },
+  "Rapid": {
+    "professional": "灵动迅捷",
+    "playerSlang": "跑跑"
+  },
+  "First Touch": {
+    "professional": "第一脚触球",
+    "playerSlang": "磁铁"
+  },
+  "Trickster": {
+    "professional": "诡术师",
+    "playerSlang": "魔术师"
+  },
+  "Press Proven": {
+    "professional": "紧逼好手",
+    "playerSlang": "紧逼好手"
+  },
+  "Quick Step": {
+    "professional": "健步如飞",
+    "playerSlang": "火箭"
+  },
+  "Relentless": {
+    "professional": "坚持不懈",
+    "playerSlang": "电池"
+  },
+  "Long Throw": {
+    "professional": "远距离界外球",
+    "playerSlang": "手抛球"
+  },
+  "Bruiser": {
+    "professional": "斗士",
+    "playerSlang": "肌肉"
+  },
+  "Enforcer": {
+    "professional": "执行者",
+    "playerSlang": "护球盘带"
+  },
+  "Far Throw": {
+    "professional": "远距离抛球",
+    "playerSlang": "门将抛球"
+  },
+  "Footwork": {
+    "professional": "步法",
+    "playerSlang": "用脚扑救"
+  },
+  "Cross Claimer": {
+    "professional": "传中没收者",
+    "playerSlang": "传中拦截"
+  },
+  "Rush Out": {
+    "professional": "1对1紧逼",
+    "playerSlang": "出击"
+  },
+  "Far Reach": {
+    "professional": "远距离出击",
+    "playerSlang": "拦远射"
+  },
+  "Deflector": {
+    "professional": "偏转",
+    "playerSlang": "击球出界"
+  }
+}

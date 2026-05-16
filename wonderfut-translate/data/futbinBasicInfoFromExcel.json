@@ -1,0 +1,26 @@
+{
+  "Skills": {
+    "professional": "花式动作",
+    "playerSlang": "花式"
+  },
+  "Weak Foot": {
+    "professional": "逆足",
+    "playerSlang": "逆足"
+  },
+  "Height": {
+    "professional": "身高",
+    "playerSlang": "身高"
+  },
+  "Foot": {
+    "professional": "惯用脚",
+    "playerSlang": "惯用脚"
+  },
+  "Age": {
+    "professional": "年龄",
+    "playerSlang": "年龄"
+  },
+  "Squad": {
+    "professional": "卡面",
+    "playerSlang": "卡面"
+  }
+}
