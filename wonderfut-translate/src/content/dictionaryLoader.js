@@ -26,6 +26,7 @@
     'https://gitee.com/yuyuzhuoyi/wonderfut-translate/raw/master/evolutions.json';
   const REMOTE_FETCH_MESSAGE_TYPE = 'wonderfut_remote_fetch';
   const EVOLUTIONS_STORAGE_KEY = 'wonderfut_evolutions_dict_cache';
+  const MIN_EVOLUTIONS_ENTRY_COUNT = 100;
   const ONE_DAY_MS = 24 * 60 * 60 * 1000;
   const OTHERS_DICT_PATH = chrome.runtime.getURL('data/others.json');
 
@@ -89,6 +90,17 @@
       entry.data &&
       Date.now() - entry.timestamp < ONE_DAY_MS
     );
+  }
+
+  function countDictionaryEntries(dict) {
+    if (!dict || typeof dict !== 'object') {
+      return 0;
+    }
+    return Object.keys(dict).length;
+  }
+
+  function isEvolutionsDictionaryCacheHealthy(data) {
+    return countDictionaryEntries(data) >= MIN_EVOLUTIONS_ENTRY_COUNT;
   }
 
   function hasRuntimeMessaging() {
@@ -156,8 +168,15 @@
     const { storageKey, remoteUrl, localPath } = options || {};
     const storage = getChromeStorageLocal();
     const cachedEntry = await storageGet(storage, storageKey);
+    const shouldValidateEvolutionsCache = storageKey === EVOLUTIONS_STORAGE_KEY;
     if (isCacheEntryValid(cachedEntry)) {
-      return cachedEntry.data;
+      if (
+        !shouldValidateEvolutionsCache ||
+        isEvolutionsDictionaryCacheHealthy(cachedEntry.data)
+      ) {
+        return cachedEntry.data;
+      }
+      console.warn('Evolutions cache is unhealthy, fallback to remote/local.');
     }
     const staleData = cachedEntry?.data;
 
@@ -174,7 +193,11 @@
       }
     }
 
-    if (staleData) {
+    if (
+      staleData &&
+      (!shouldValidateEvolutionsCache ||
+        isEvolutionsDictionaryCacheHealthy(staleData))
+    ) {
       return staleData;
     }
 

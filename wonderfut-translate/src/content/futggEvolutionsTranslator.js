@@ -1,10 +1,15 @@
 (() => {
-  const FUTGG_EVOLUTION_LAB_REGEX = /^\/evo-lab\/evolve\/?/;
+  const FUTGG_EVOLUTION_LAB_REGEX = /^\/evo-lab(?:\/.*)?$/i;
   const FUTGG_EVOLUTIONS_COLLECTION_REGEX = /^\/evolutions(?:\/[a-z-]+\/?)*\/?$/i;
   const FUTGG_PLAYER_EVOLUTIONS_REGEX =
     /^\/players\/\d+-[a-z0-9-]+\/evolutions(?:\/.*)?$/i;
   const FUTGG_HOSTNAME_KEYWORD = 'fut.gg';
-  const EVOLUTION_CONTAINER_SELECTOR = '[data-js-selector="create-my-evolutions"]';
+  const EVOLUTION_CONTAINER_SELECTORS = [
+    '[data-js-selector="create-my-evolutions"]',
+    '.scrollable-evo',
+  ];
+  const EVOLUTION_CARD_ROOT_SELECTOR =
+    'div.rounded.border.border-gray.bg-gray-800.grid.h-full.relative';
   const PLAYER_EVOLUTION_CARD_CLASS = 'fc-card-container';
   const EVOLUTION_LINK_SELECTOR = 'a[href*="/evolutions/"]';
   const EVOLUTION_LINK_PATH_REGEX = /^\/evolutions\/\d+-[a-z0-9-]+\/?$/i;
@@ -93,6 +98,13 @@
     return mainText + separator + '(' + originalText + ')';
   }
 
+  function normalizeLookupKey(value) {
+    return String(value || '')
+      .trim()
+      .replace(/\s+/g, ' ')
+      .replace(/[‐‑‒–—−]/g, '-');
+  }
+
   function translateTextNode(node, dictionary, options) {
     if (!node || node.nodeType !== Node.TEXT_NODE) {
       return;
@@ -106,7 +118,22 @@
       processedTextSnapshots.set(node, currentValue);
       return;
     }
-    const entry = dictionary[trimmed];
+    let entry = dictionary[trimmed];
+    if (!entry) {
+      const upperKey = trimmed.toUpperCase();
+      if (upperKey !== trimmed) {
+        entry = dictionary[upperKey];
+      }
+    }
+    if (!entry) {
+      const normalizedTrimmed = normalizeLookupKey(trimmed);
+      const matchedKey = Object.keys(dictionary).find(
+        (key) => normalizeLookupKey(key) === normalizedTrimmed
+      );
+      if (matchedKey) {
+        entry = dictionary[matchedKey];
+      }
+    }
     if (!entry) {
       processedTextSnapshots.set(node, currentValue);
       return;
@@ -152,18 +179,41 @@
       if (!node) {
         return;
       }
-      if (matchesSelector(node, EVOLUTION_CONTAINER_SELECTOR)) {
-        containers.add(node);
-      }
+      EVOLUTION_CONTAINER_SELECTORS.forEach((selector) => {
+        if (matchesSelector(node, selector)) {
+          containers.add(node);
+        }
+        if (typeof node.querySelectorAll === 'function') {
+          node.querySelectorAll(selector).forEach((el) => {
+            containers.add(el);
+          });
+        }
+      });
       if (typeof node.querySelectorAll === 'function') {
-        node.querySelectorAll(EVOLUTION_CONTAINER_SELECTOR).forEach((el) => {
-          containers.add(el);
-        });
+        node
+          .querySelectorAll('button[title="View evolution details"]')
+          .forEach((button) => {
+            const cardRoot = button.closest(EVOLUTION_CARD_ROOT_SELECTOR);
+            if (cardRoot) {
+              containers.add(cardRoot);
+            }
+          });
       }
       if (typeof node.closest === 'function') {
-        const ancestor = node.closest(EVOLUTION_CONTAINER_SELECTOR);
-        if (ancestor) {
-          containers.add(ancestor);
+        EVOLUTION_CONTAINER_SELECTORS.forEach((selector) => {
+          const ancestor = node.closest(selector);
+          if (ancestor) {
+            containers.add(ancestor);
+          }
+        });
+        if (
+          node.matches &&
+          node.matches('button[title="View evolution details"]')
+        ) {
+          const cardRoot = node.closest(EVOLUTION_CARD_ROOT_SELECTOR);
+          if (cardRoot) {
+            containers.add(cardRoot);
+          }
         }
       }
     });
