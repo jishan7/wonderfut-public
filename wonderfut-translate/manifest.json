@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "文达WonderFut-攻略站翻译机网络优化版",
   "description": "将FC UT 攻略站 Futbin Futgg 的英文名词翻译为中文.",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "content_scripts": [
     {
       "matches": [
@@ -39,7 +39,9 @@
     "service_worker": "src/background/remoteFetchProxy.js",
     "type": "module"
   },
-  "permissions": ["storage"],
+  "permissions": [
+    "storage"
+  ],
   "host_permissions": [
     "https://gitee.com/*",
     "https://raw.giteeusercontent.com/*"
@@ -59,7 +61,9 @@
         "data/futbinPlayerStats.json",
         "data/others.json"
       ],
-      "matches": ["<all_urls>"]
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ]
 }
