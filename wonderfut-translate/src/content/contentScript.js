@@ -10,6 +10,15 @@
   const chemistryTranslator = window.wonderfutChemistryTranslator;
   const playstylesTranslator = window.wonderfutPlaystylesTranslator;
   const evolutionsTranslator = window.wonderfutEvolutionsTranslator;
+  const futbinTranslator = window.wonderfutFutbinTranslator;
+  const futggCommonTranslator = window.wonderfutFutggCommonTranslator;
+  const futggPlayerDetailsTranslator =
+    window.wonderfutFutggPlayerDetailsTranslator;
+  const futggPlayersTranslator = window.wonderfutFutggPlayersTranslator;
+  const futggEvolutionsListTranslator =
+    window.wonderfutFutggEvolutionsListTranslator;
+  const futggTrendingEvolutionsTranslator =
+    window.wonderfutFutggTrendingEvolutionsTranslator;
   const futggEvolutionsTranslator = window.wonderfutFutggEvolutionsTranslator;
   const futggEvoLabTranslator = window.wonderfutFutggEvoLabTranslator;
   const futbinPlayerStatsTranslator =
@@ -18,6 +27,7 @@
   const REFRESH_BUTTON_DEFAULT_TEXT = '获取新翻译';
   const LOCATION_CHECK_INTERVAL_MS = 1000;
   const HOMEPAGE_BANNER_ID = 'wonderfut-homepage-banner';
+  const AUTO_REFRESH_DELAY_MS = 8000;
 
   if (
     !dictionaryLoader ||
@@ -28,6 +38,12 @@
     !chemistryTranslator ||
     !playstylesTranslator ||
     !evolutionsTranslator ||
+    !futbinTranslator ||
+    !futggCommonTranslator ||
+    !futggPlayerDetailsTranslator ||
+    !futggPlayersTranslator ||
+    !futggEvolutionsListTranslator ||
+    !futggTrendingEvolutionsTranslator ||
     !futggEvolutionsTranslator ||
     !futggEvoLabTranslator ||
     !futbinPlayerStatsTranslator
@@ -44,11 +60,15 @@
     chemistry: null,
     playstyles: null,
     evolutions: null,
+    rarity: null,
     futggEvoLab: null,
     futbinPlayerStats: null,
     others: null,
   };
   let dictionaryLoadPromise = null;
+  let autoRefreshStarted = false;
+  const pendingTranslationRoots = new Set();
+  let pendingTranslationFrame = null;
 
   async function ensureDictionaries() {
     if (
@@ -59,6 +79,7 @@
       dictionaryCache.chemistry &&
       dictionaryCache.playstyles &&
       dictionaryCache.evolutions &&
+      dictionaryCache.rarity &&
       dictionaryCache.others
     ) {
       return dictionaryCache;
@@ -72,6 +93,7 @@
         dictionaryLoader.loadChemistryDictionary(),
         dictionaryLoader.loadPlaystylesDictionary(),
         dictionaryLoader.loadEvolutionsDictionary(),
+        dictionaryLoader.loadRarityDictionary(),
         dictionaryLoader.loadFutggEvoLabDictionary(),
         dictionaryLoader.loadFutbinPlayerStatsDictionary(),
         dictionaryLoader.loadOthersDictionary(),
@@ -85,6 +107,7 @@
             chemistry,
             playstyles,
             evolutions,
+            rarity,
             futggEvoLab,
             futbinPlayerStats,
             others,
@@ -96,6 +119,7 @@
             dictionaryCache.chemistry = chemistry;
             dictionaryCache.playstyles = playstyles;
             dictionaryCache.evolutions = evolutions;
+            dictionaryCache.rarity = rarity;
             dictionaryCache.futggEvoLab = futggEvoLab;
             dictionaryCache.futbinPlayerStats = futbinPlayerStats;
             dictionaryCache.others = others;
@@ -141,12 +165,74 @@
         usePlayerSlang: USE_PLAYER_SLANG,
         showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
       });
+      futbinTranslator.translate(root, null, {
+        usePlayerSlang: USE_PLAYER_SLANG,
+        showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
+        extraDictionaries: [
+          dictionaries.basic,
+          dictionaries.evolutions,
+          dictionaries.rarity,
+          dictionaries.sixStat,
+          dictionaries.chemistry,
+          dictionaries.playstyles,
+          dictionaries.roles,
+          dictionaries.squad,
+        ],
+      });
+      futggCommonTranslator.translate(root, null, {
+        usePlayerSlang: USE_PLAYER_SLANG,
+        showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
+      });
+      futggPlayerDetailsTranslator.translate(root, null, {
+        usePlayerSlang: USE_PLAYER_SLANG,
+        showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
+        extraDictionaries: [
+          dictionaries.basic,
+          dictionaries.sixStat,
+          dictionaries.chemistry,
+          dictionaries.playstyles,
+          dictionaries.roles,
+          dictionaries.rarity,
+          dictionaries.evolutions,
+          dictionaries.squad,
+        ],
+      });
+      futggPlayersTranslator.translate(root, null, {
+        usePlayerSlang: USE_PLAYER_SLANG,
+        showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
+        extraDictionaries: [
+          dictionaries.sixStat,
+          dictionaries.playstyles,
+          dictionaries.roles,
+          dictionaries.rarity,
+        ],
+      });
+      futggEvolutionsListTranslator.translate(root, dictionaries.evolutions, {
+        usePlayerSlang: USE_PLAYER_SLANG,
+        showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
+        extraDictionaries: [
+          dictionaries.sixStat,
+          dictionaries.playstyles,
+          dictionaries.roles,
+          dictionaries.rarity,
+        ],
+      });
+      futggTrendingEvolutionsTranslator.translate(root, null, {
+        usePlayerSlang: USE_PLAYER_SLANG,
+        showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
+      });
       futggEvolutionsTranslator.translate(
         root,
         dictionaries.evolutions,
         {
           usePlayerSlang: USE_PLAYER_SLANG,
           showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
+          extraDictionaries: [
+            dictionaries.sixStat,
+            dictionaries.playstyles,
+            dictionaries.roles,
+            dictionaries.rarity,
+          ],
         }
       );
       futggEvoLabTranslator.translate(
@@ -156,9 +242,11 @@
           usePlayerSlang: USE_PLAYER_SLANG,
           showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
           extraDictionaries: [
+            dictionaries.evolutions,
             dictionaries.sixStat,
             dictionaries.playstyles,
             dictionaries.roles,
+            dictionaries.rarity,
           ],
           accelerateTranslations: dictionaries.others?.accelerate,
         }
@@ -176,19 +264,57 @@
     }
   }
 
-  function handleMutations(mutations) {
-    mutations.forEach((mutation) => {
-      mutation.addedNodes.forEach((node) => {
-        if (node.nodeType === Node.ELEMENT_NODE) {
-          translateRoot(node);
-        }
+  function flushPendingTranslations() {
+    pendingTranslationFrame = null;
+    const roots = Array.from(pendingTranslationRoots).filter((node, index, list) => {
+      return !list.some((other, otherIndex) => {
+        return (
+          otherIndex !== index &&
+          other &&
+          node &&
+          typeof other.contains === 'function' &&
+          other.contains(node)
+        );
       });
+    });
+    pendingTranslationRoots.clear();
+    roots.forEach((node) => {
+      translateRoot(node);
     });
     syncRefreshButtonState();
   }
 
+  function scheduleTranslateRoot(node) {
+    if (!node || node.nodeType !== Node.ELEMENT_NODE) {
+      return;
+    }
+    pendingTranslationRoots.add(node);
+    if (pendingTranslationFrame !== null) {
+      return;
+    }
+    pendingTranslationFrame =
+      typeof window.requestAnimationFrame === 'function'
+        ? window.requestAnimationFrame(flushPendingTranslations)
+        : window.setTimeout(flushPendingTranslations, 16);
+  }
+
+  function handleMutations(mutations) {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        scheduleTranslateRoot(node);
+      });
+    });
+  }
+
   function isEvolutionPage() {
-    return [evolutionsTranslator, futggEvolutionsTranslator, futggEvoLabTranslator].some(
+    return [
+      futggPlayersTranslator,
+      evolutionsTranslator,
+      futggEvolutionsListTranslator,
+      futggTrendingEvolutionsTranslator,
+      futggEvolutionsTranslator,
+      futggEvoLabTranslator,
+    ].some(
       (translator) =>
         translator &&
         typeof translator.isTargetPage === 'function' &&
@@ -337,23 +463,24 @@
 
   async function handleRefreshButtonClick(event) {
     const button = event.currentTarget;
-    if (!dictionaryLoader || typeof dictionaryLoader.forceRefreshEvolutionsDictionary !== 'function') {
-      console.error('Dictionary loader cannot refresh evolutions dictionary.');
+    if (!dictionaryLoader || typeof dictionaryLoader.forceRefreshRemoteDictionaries !== 'function') {
+      console.error('Dictionary loader cannot refresh remote dictionaries.');
       return;
     }
     button.disabled = true;
     button.textContent = '获取中...';
     try {
-      const updatedDictionary =
-        await dictionaryLoader.forceRefreshEvolutionsDictionary();
-      dictionaryCache.evolutions = updatedDictionary;
+      const updatedDictionaries =
+        await dictionaryLoader.forceRefreshRemoteDictionaries();
+      dictionaryCache.evolutions = updatedDictionaries.evolutions;
+      dictionaryCache.rarity = updatedDictionaries.rarity;
       await translateRoot(document);
       button.textContent = '更新成功';
       setTimeout(() => {
         button.textContent = REFRESH_BUTTON_DEFAULT_TEXT;
       }, 1500);
     } catch (error) {
-      console.error('Failed to refresh evolutions dictionary:', error);
+      console.error('Failed to refresh remote dictionaries:', error);
       if (error?.stack) {
         console.error('Stack trace:', error.stack);
       }
@@ -371,6 +498,35 @@
     } finally {
       button.disabled = false;
     }
+  }
+
+  function startAutoRefreshEvolutionsDictionary() {
+    if (
+      autoRefreshStarted ||
+      !dictionaryLoader ||
+      typeof dictionaryLoader.maybeRefreshRemoteDictionaries !== 'function'
+    ) {
+      return;
+    }
+    autoRefreshStarted = true;
+    window.setTimeout(async () => {
+      try {
+        const result =
+          await dictionaryLoader.maybeRefreshRemoteDictionaries();
+        if (!result?.updated) {
+          return;
+        }
+        if (result.evolutions?.dictionary) {
+          dictionaryCache.evolutions = result.evolutions.dictionary;
+        }
+        if (result.rarity?.dictionary) {
+          dictionaryCache.rarity = result.rarity.dictionary;
+        }
+        await translateRoot(document);
+      } catch (error) {
+        console.warn('WonderFut automatic translation refresh failed:', error);
+      }
+    }, AUTO_REFRESH_DELAY_MS);
   }
 
   function monitorEvolutionPageChanges() {
@@ -413,6 +569,7 @@
     syncRefreshButtonState();
     createRefreshButtonIfNeeded();
     createHomepageBannerIfNeeded();
+    startAutoRefreshEvolutionsDictionary();
     const observer = new MutationObserver(handleMutations);
     observer.observe(document.body, { childList: true, subtree: true });
     monitorEvolutionPageChanges();

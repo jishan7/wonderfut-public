@@ -1,6 +1,6 @@
 (() => {
   const FUTBIN_HOSTNAME_KEYWORD = 'futbin.com';
-  const FUTBIN_EVOLUTION_BUILDER_REGEX = /^\/evolutions\/builder\//;
+  const FUTBIN_EVOLUTION_BUILDER_REGEX = /^\/(?:\d+\/)?evolutions\/builder\//;
   const FUTBIN_GENERAL_EVOLUTIONS_REGEX = /^\/evolutions\/?$/;
   const FUTBIN_PLAYER_EVOLUTION_REGEX =
     /^\/\d+\/player\/\d+\/[^/]+\/evolutions?(?:\/.*)?$/;
@@ -10,6 +10,7 @@
     '.player-evo-card-title',
     '.lightbox-header .og-pill-evo',
     '.evolution-builder-available-evolution .og-pill-evo',
+    'a[href*="/evolutions/"]',
   ];
   const PLAYER_OVERVIEW_SELECTORS = ['.evolutions-overview-wrapper'];
   const EVOLUTION_NAME_SELECTOR = EVOLUTION_NAME_SELECTORS.join(', ');
