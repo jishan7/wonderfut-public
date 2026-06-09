@@ -1,3 +1,18 @@
+1.2.1
+修复 FUTBIN 新版进化建造器路径翻译失效：
+- 支持 /26/evolutions/builder/... 这种带赛季前缀的 URL。
+- 恢复 builder 页面 UI 翻译。
+- 恢复 builder 页面中按 Gitee evolutions.json 显示进化名称。
+
+1.2.0
+补充 futbin.com 多页面翻译支持：
+- 首页顶部导航、搜索框、热门入口和热门进化球员区域。
+- /evolutions 页面标题、筛选、球员要求、总升级和属性字段。
+- /popular/evolutions 页面整体翻译，并使用 Gitee evolutions.json 显示进化名称。
+- /evolutions/builder 页面路径、预设、分类、价格、排序、排除进化等操作区。
+- FUTBIN 球员详情页顶部导航、面包屑、标题、tab、价格信息和部分基础信息。
+继续复用 Gitee evolutions.json 和 rarity.json，支持 24 小时自动更新和手动获取新翻译。
+
 1.1.0
 修复 fut.gg 改版导致翻译失败的问题
 
@@ -45,4 +60,3 @@ futgg的进化实验室页面，添加了获取更新按钮。【其他页面还
  - 比油猴脚本安装步骤简化（不再需要安装篡改猴）。
  - 代码也更加容易维护，可扩展性增强。后续升级可以更快进行。
 后续会更新这个新的插件安装教程。
-
