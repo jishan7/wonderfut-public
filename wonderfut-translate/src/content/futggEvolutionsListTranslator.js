@@ -1,6 +1,7 @@
 (() => {
   const utils = window.wonderfutFutggTranslationUtils;
   const EVOLUTIONS_PAGE_REGEX = /^\/evolutions\/?$/i;
+  const EVO_LAB_EVOLUTIONS_PAGE_REGEX = /^\/evo-lab\/evolutions\/?$/i;
   const CONTAINER_SELECTORS = [
     'main',
     'main h1',
@@ -28,6 +29,28 @@
     'EVO LAB': { professional: '进化实验室', playerSlang: '进化实验室' },
     'EXPIRED EVOLUTIONS': { professional: '已过期进化', playerSlang: '已过期进化' },
     'Search evolutions...': { professional: '搜索进化...', playerSlang: '搜索进化...' },
+    'Search for an evolution...': { professional: '搜索进化...', playerSlang: '搜索进化...' },
+    EXCLUDED: { professional: '已排除', playerSlang: '已排除' },
+    Excluded: { professional: '已排除', playerSlang: '已排除' },
+    ACTIVE: { professional: '可用', playerSlang: '可用' },
+    Active: { professional: '可用', playerSlang: '可用' },
+    ELIGIBLE: { professional: '符合条件', playerSlang: '符合条件' },
+    Eligible: { professional: '符合条件', playerSlang: '符合条件' },
+    USED: { professional: '已使用', playerSlang: '已使用' },
+    Used: { professional: '已使用', playerSlang: '已使用' },
+    Settings: { professional: '设置', playerSlang: '设置' },
+    'YOUR ELIGIBLE PLAYERS': { professional: '符合条件的球员', playerSlang: '符合条件的球员' },
+    'None of your players are eligible for this evolution. You can find other options here.': {
+      professional: '你的球员中没有符合此进化条件的球员。你可以在这里查看其他选项。',
+      playerSlang: '你的球员中没有符合此进化条件的球员。你可以在这里查看其他选项。',
+    },
+    'None of your players are eligible for this evolution. You can find other options': {
+      professional: '你的球员中没有符合此进化条件的球员。你可以查看其他选项',
+      playerSlang: '你的球员中没有符合此进化条件的球员。你可以查看其他选项',
+    },
+    here: { professional: '这里', playerSlang: '这里' },
+    'EXCLUDE FROM PLAYER UPGRADES': { professional: '从球员升级中排除', playerSlang: '从球员升级中排除' },
+    'Exclude from player upgrades': { professional: '从球员升级中排除', playerSlang: '从球员升级中排除' },
     Rewards: { professional: '奖励', playerSlang: '奖励' },
     'PlayStyles Lab': { professional: '比赛风格实验室', playerSlang: '比赛风格实验室' },
     'Roles++': { professional: '角色++', playerSlang: '角色++' },
@@ -44,6 +67,7 @@
     Rarity: { professional: '稀有度', playerSlang: '稀有度' },
     Overall: { professional: '总评', playerSlang: '总评' },
     'Max PS': { professional: '最多比赛风格', playerSlang: '最多比赛风格' },
+    'Max PS+': { professional: '最多比赛风格+', playerSlang: '最多比赛风格+' },
     WF: { professional: '逆足', playerSlang: '逆足' },
     SM: { professional: '花式', playerSlang: '花式' },
     Vision: { professional: '视野', playerSlang: '视野' },
@@ -65,7 +89,8 @@
   function isTargetPage(locationObj = window.location) {
     return Boolean(
       utils?.isFutggHost(locationObj) &&
-        EVOLUTIONS_PAGE_REGEX.test(locationObj.pathname || '')
+        (EVOLUTIONS_PAGE_REGEX.test(locationObj.pathname || '') ||
+          EVO_LAB_EVOLUTIONS_PAGE_REGEX.test(locationObj.pathname || ''))
     );
   }
 

@@ -1,3 +1,9 @@
+1.2.2
+补充 FUT.GG Evo Lab 进化列表页翻译支持：
+- 支持 https://www.fut.gg/evo-lab/evolutions/ 页面。
+- 复用 /evolutions/ 页面翻译逻辑，进化名继续读取 Gitee evolutions.json。
+- 补充 Excluded、Active、Eligible、Used、Your eligible players、Exclude from player upgrades 等页面文案。
+
 1.2.1
 修复 FUTBIN 新版进化建造器路径翻译失效：
 - 支持 /26/evolutions/builder/... 这种带赛季前缀的 URL。
