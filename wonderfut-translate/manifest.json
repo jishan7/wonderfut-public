@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "文达WonderFut-攻略站翻译机网络优化版",
   "description": "将FC UT 攻略站 Futbin Futgg 的英文名词翻译为中文.",
-  "version": "1.1.0",
+  "version": "1.2.1",
   "content_scripts": [
     {
       "matches": [
@@ -20,6 +20,13 @@
         "src/content/chemistryTranslator.js",
         "src/content/playstylesTranslator.js",
         "src/content/evolutionsTranslator.js",
+        "src/content/futggTranslationUtils.js",
+        "src/content/futbinTranslator.js",
+        "src/content/futggCommonTranslator.js",
+        "src/content/futggPlayerDetailsTranslator.js",
+        "src/content/futggPlayersTranslator.js",
+        "src/content/futggEvolutionsListTranslator.js",
+        "src/content/futggTrendingEvolutionsTranslator.js",
         "src/content/futggEvoLab.js",
         "src/content/futggEvolutionsTranslator.js",
         "src/content/futbinPlayerStats.js",
@@ -47,6 +54,7 @@
         "data/futbinChemistryFromExcel.json",
         "data/futbinPlaystylesFromExcel.json",
         "data/evolutions.json",
+        "data/rarity.json",
         "data/futggEvoLab.json",
         "data/futbinPlayerStats.json",
         "data/others.json"
