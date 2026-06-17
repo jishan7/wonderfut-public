@@ -1,3 +1,18 @@
+1.2.3
+新增 FUT.GG GG Club 翻译支持：
+- 覆盖登录引导、阵容验证、俱乐部首页、GG Club 进化列表和单球员进化模拟页。
+- GG Club 进化模拟页复用 Gitee evolutions.json 词库翻译进化名称，并补充常见升级、草稿、生成模式和状态提示翻译。
+- 补充 GG Club 进化球员下拉框、构建页、草稿页、路径生成结果、倒计时、搜索框、应用和保存草稿按钮翻译。
+- 补充 GG Club 路径生成中状态、停止按钮、保存后状态翻译。
+- 新增 FUT.GG 全站球员悬浮窗翻译，复用角色、化学风格、基础信息、阵容/国家/联赛等现有词库。
+- 补充 GG Club 自定义设置说明、隐藏升级按钮和进化三点菜单翻译。
+- 补充 FUT.GG Evo Lab 首页、Filter/Settings 侧边栏、tab 栏和 /evo-lab/gg-club/ 页面翻译。
+- 补充 FUT.GG /evolutions/ 进化卡片倒计时翻译：左侧为解锁到期，右侧为使用到期。
+- 补充 FUT.GG /evolutions/ 月份倒计时、Position、Max.、Training Time 和 day/days 翻译。
+- 补充 FUT.GG /evolutions/ 训练营进化说明文案翻译。
+- 修正 FUT.GG /evolutions/ 升级项 Positioning 为“站位”，保留 GK Positioning 为“守门员站位”。
+- 补充 FUT.GG /evo-lab/ 及次级页面搜索框、开始进化设置侧栏排序和筛选项翻译。
+
 1.2.2
 补充 FUT.GG Evo Lab 进化列表页翻译支持：
 - 支持 https://www.fut.gg/evo-lab/evolutions/ 页面。

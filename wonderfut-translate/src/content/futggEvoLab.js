@@ -6,21 +6,113 @@
     '[role="main"]',
     '[data-js-selector="create-my-evolutions"]',
     '.scrollable-evo',
+    '[role="dialog"]',
+    '[data-radix-portal]',
+    '[data-radix-popper-content-wrapper]',
+    'aside',
+    '[class*="dialog"]',
+    '[class*="modal"]',
+    '[class*="popover"]',
+    '[class*="sheet"]',
+    '[class*="drawer"]',
+    '[data-state="open"]',
+    'input[placeholder]',
+    'textarea[placeholder]',
   ];
   const EVOLUTION_CARD_ROOT_SELECTOR =
     'div.rounded.border.border-gray.bg-gray-800.grid.h-full.relative';
   const EVO_LAB_UI_DICTIONARY = {
     PLAYERS: { professional: '球员', playerSlang: '球员' },
+    Players: { professional: '球员', playerSlang: '球员' },
     UPGRADES: { professional: '升级', playerSlang: '升级' },
+    Upgrades: { professional: '升级', playerSlang: '升级' },
     EVOLUTIONS: { professional: '进化', playerSlang: '进化' },
+    Evolutions: { professional: '进化详情', playerSlang: '进化详情' },
     EVOLVE: { professional: '进化', playerSlang: '进化' },
+    Evolve: { professional: '开始进化', playerSlang: '开始进化' },
     'GG CLUB': { professional: 'GG 俱乐部', playerSlang: 'GG 俱乐部' },
+    'GG Club': { professional: 'GG 俱乐部', playerSlang: 'GG 俱乐部' },
+    'GG CLUBS': { professional: 'GG 俱乐部', playerSlang: 'GG 俱乐部' },
     'ALL EVOS': { professional: '全部进化', playerSlang: '全部进化' },
+    ALL: { professional: '全部', playerSlang: '全部' },
+    All: { professional: '全部', playerSlang: '全部' },
+    NEW: { professional: '新', playerSlang: '新' },
+    New: { professional: '新', playerSlang: '新' },
+    SYNC: { professional: '同步', playerSlang: '同步' },
+    Sync: { professional: '同步', playerSlang: '同步' },
     ACTIVE: { professional: '已启用', playerSlang: '已启用' },
     CUSTOMISE: { professional: '自定义', playerSlang: '自定义' },
     CUSTOMIZE: { professional: '自定义', playerSlang: '自定义' },
     REVIEW: { professional: '预览', playerSlang: '预览' },
     Settings: { professional: '设置', playerSlang: '设置' },
+    'SORT BY': { professional: '排序方式', playerSlang: '排序方式' },
+    'Sort By': { professional: '排序方式', playerSlang: '排序方式' },
+    'Newest First': { professional: '最新优先', playerSlang: '最新优先' },
+    'Oldest First': { professional: '最旧优先', playerSlang: '最旧优先' },
+    'Price: Low to High': { professional: '价格从低到高', playerSlang: '价格从低到高' },
+    'Price: High to Low': { professional: '价格从高到低', playerSlang: '价格从高到低' },
+    'GGR Increase': { professional: 'GGR 增幅', playerSlang: 'GGR 增幅' },
+    'Expiring Soonest': { professional: '最快到期', playerSlang: '最快到期' },
+    FILTERS: { professional: '筛选', playerSlang: '筛选' },
+    Filters: { professional: '筛选', playerSlang: '筛选' },
+    'Check Eligibility': { professional: '检查可用性', playerSlang: '检查可用性' },
+    'Hide Expired': { professional: '隐藏过期', playerSlang: '隐藏过期' },
+    'Show upgrades': { professional: '显示升级', playerSlang: '显示升级' },
+    'Show Upgrades': { professional: '显示升级', playerSlang: '显示升级' },
+    'Show cards': { professional: '显示卡片', playerSlang: '显示卡片' },
+    'Show Cards': { professional: '显示卡片', playerSlang: '显示卡片' },
+    'WATCH PLAYER': { professional: '查看球员', playerSlang: '查看球员' },
+    'Watch Player': { professional: '查看球员', playerSlang: '查看球员' },
+    'Has Upgrade + GGR': {
+      professional: '有升级 + GGR',
+      playerSlang: '有升级 + GGR',
+    },
+    GGR: { professional: 'GGR', playerSlang: 'GGR' },
+    POSITIONS: { professional: '位置', playerSlang: '位置' },
+    ATTACKERS: { professional: '前锋', playerSlang: '前锋' },
+    MIDFIELDERS: { professional: '中场', playerSlang: '中场' },
+    DEFENDERS: { professional: '后卫', playerSlang: '后卫' },
+    'SHOW / HIDE': { professional: '显示 / 隐藏', playerSlang: '显示 / 隐藏' },
+    'Hide Base Players': {
+      professional: '隐藏基础球员',
+      playerSlang: '隐藏基础球员',
+    },
+    'Hide Evolutions Players': {
+      professional: '隐藏进化球员',
+      playerSlang: '隐藏进化球员',
+    },
+    'Hide Reward Upgrades': {
+      professional: '隐藏奖励升级',
+      playerSlang: '隐藏奖励升级',
+    },
+    '+ CREATE': { professional: '+ 创建', playerSlang: '+ 创建' },
+    CREATE: { professional: '创建', playerSlang: '创建' },
+    Create: { professional: '创建', playerSlang: '创建' },
+    Filter: { professional: '筛选', playerSlang: '筛选' },
+    'Search your players...': {
+      professional: '搜索你的球员...',
+      playerSlang: '搜索你的球员...',
+    },
+    'Search players...': {
+      professional: '搜索球员...',
+      playerSlang: '搜索球员...',
+    },
+    'Search your evolutions...': {
+      professional: '搜索你的进化...',
+      playerSlang: '搜索你的进化...',
+    },
+    'Sync to Evo Lab': {
+      professional: '同步到进化实验室',
+      playerSlang: '同步到进化实验室',
+    },
+    'GG Club tracks your players’ final stats, but not the evolution path that created them. Players you already have in Evo Lab keep their evolution path and have their stats matched to your club; new players sync as custom players without a path.': {
+      professional: 'GG 俱乐部会记录你球员的最终属性，但不会记录生成这些属性的进化路径。已在进化实验室中的球员会保留进化路径，并把属性匹配到你的俱乐部；新球员会以没有路径的自定义球员同步。',
+      playerSlang: 'GG 俱乐部会记录你球员的最终属性，但不会记录生成这些属性的进化路径。已在进化实验室中的球员会保留进化路径，并把属性匹配到你的俱乐部；新球员会以没有路径的自定义球员同步。',
+    },
+    "GG Club tracks your players' final stats, but not the evolution path that created them. Players you already have in Evo Lab keep their evolution path and have their stats matched to your club; new players sync as custom players without a path.": {
+      professional: 'GG 俱乐部会记录你球员的最终属性，但不会记录生成这些属性的进化路径。已在进化实验室中的球员会保留进化路径，并把属性匹配到你的俱乐部；新球员会以没有路径的自定义球员同步。',
+      playerSlang: 'GG 俱乐部会记录你球员的最终属性，但不会记录生成这些属性的进化路径。已在进化实验室中的球员会保留进化路径，并把属性匹配到你的俱乐部；新球员会以没有路径的自定义球员同步。',
+    },
     APPLY: { professional: '应用', playerSlang: '应用' },
     RESET: { professional: '重置', playerSlang: '重置' },
     OVERALL: { professional: '总评', playerSlang: '总评' },
@@ -52,6 +144,7 @@
     'No evolutions applied': { professional: '未应用进化', playerSlang: '未应用进化' },
     'Select a player to evolve': { professional: '选择要进化的球员', playerSlang: '选择要进化的球员' },
     'Search evolutions...': { professional: '搜索进化...', playerSlang: '搜索进化...' },
+    'Search for an evolution...': { professional: '搜索进化...', playerSlang: '搜索进化...' },
     PLAYSTYLES: { professional: '比赛风格', playerSlang: '比赛风格' },
     'PLAYSTYLE+': { professional: '比赛风格+', playerSlang: '比赛风格+' },
     PLAYSTYLE: { professional: '比赛风格', playerSlang: '比赛风格' },
@@ -218,6 +311,18 @@
           original: trimmed,
           prefix,
           suffix: statMatch.suffix,
+        };
+      }
+    }
+    const trailingCountMatch = trimmed.match(/^([A-Za-z][A-Za-z. /+&-]+?)\s+(\d+)$/);
+    if (trailingCountMatch) {
+      const labelMatch = getDictionaryEntry(trailingCountMatch[1].trim(), dictionary);
+      if (labelMatch) {
+        return {
+          entry: labelMatch.entry,
+          original: trimmed,
+          prefix: labelMatch.prefix,
+          suffix: labelMatch.suffix + ' ' + trailingCountMatch[2],
         };
       }
     }

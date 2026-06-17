@@ -12,6 +12,8 @@
   const evolutionsTranslator = window.wonderfutEvolutionsTranslator;
   const futbinTranslator = window.wonderfutFutbinTranslator;
   const futggCommonTranslator = window.wonderfutFutggCommonTranslator;
+  const futggPlayerPopoverTranslator =
+    window.wonderfutFutggPlayerPopoverTranslator;
   const futggPlayerDetailsTranslator =
     window.wonderfutFutggPlayerDetailsTranslator;
   const futggPlayersTranslator = window.wonderfutFutggPlayersTranslator;
@@ -19,6 +21,7 @@
     window.wonderfutFutggEvolutionsListTranslator;
   const futggTrendingEvolutionsTranslator =
     window.wonderfutFutggTrendingEvolutionsTranslator;
+  const futggGgClubTranslator = window.wonderfutFutggGgClubTranslator;
   const futggEvolutionsTranslator = window.wonderfutFutggEvolutionsTranslator;
   const futggEvoLabTranslator = window.wonderfutFutggEvoLabTranslator;
   const futbinPlayerStatsTranslator =
@@ -40,10 +43,12 @@
     !evolutionsTranslator ||
     !futbinTranslator ||
     !futggCommonTranslator ||
+    !futggPlayerPopoverTranslator ||
     !futggPlayerDetailsTranslator ||
     !futggPlayersTranslator ||
     !futggEvolutionsListTranslator ||
     !futggTrendingEvolutionsTranslator ||
+    !futggGgClubTranslator ||
     !futggEvolutionsTranslator ||
     !futggEvoLabTranslator ||
     !futbinPlayerStatsTranslator
@@ -183,6 +188,18 @@
         usePlayerSlang: USE_PLAYER_SLANG,
         showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
       });
+      futggPlayerPopoverTranslator.translate(root, null, {
+        usePlayerSlang: USE_PLAYER_SLANG,
+        showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
+        extraDictionaries: [
+          dictionaries.roles,
+          dictionaries.chemistry,
+          dictionaries.basic,
+          dictionaries.squad,
+          dictionaries.sixStat,
+          dictionaries.playstyles,
+        ],
+      });
       futggPlayerDetailsTranslator.translate(root, null, {
         usePlayerSlang: USE_PLAYER_SLANG,
         showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
@@ -220,6 +237,16 @@
       futggTrendingEvolutionsTranslator.translate(root, null, {
         usePlayerSlang: USE_PLAYER_SLANG,
         showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
+      });
+      futggGgClubTranslator.translate(root, dictionaries.evolutions, {
+        usePlayerSlang: USE_PLAYER_SLANG,
+        showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
+        extraDictionaries: [
+          dictionaries.sixStat,
+          dictionaries.playstyles,
+          dictionaries.roles,
+          dictionaries.rarity,
+        ],
       });
       futggEvolutionsTranslator.translate(
         root,
@@ -300,6 +327,10 @@
 
   function handleMutations(mutations) {
     mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes') {
+        scheduleTranslateRoot(mutation.target);
+        return;
+      }
       mutation.addedNodes.forEach((node) => {
         scheduleTranslateRoot(node);
       });
@@ -571,7 +602,12 @@
     createHomepageBannerIfNeeded();
     startAutoRefreshEvolutionsDictionary();
     const observer = new MutationObserver(handleMutations);
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['aria-label', 'placeholder', 'title', 'value'],
+    });
     monitorEvolutionPageChanges();
   }
 
