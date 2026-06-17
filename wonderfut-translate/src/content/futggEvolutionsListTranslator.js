@@ -68,6 +68,12 @@
     Overall: { professional: '总评', playerSlang: '总评' },
     'Max PS': { professional: '最多比赛风格', playerSlang: '最多比赛风格' },
     'Max PS+': { professional: '最多比赛风格+', playerSlang: '最多比赛风格+' },
+    Position: { professional: '位置', playerSlang: '位置' },
+    'Max.': { professional: '最高', playerSlang: '最高' },
+    'Training Time': { professional: '训练时间', playerSlang: '训练时间' },
+    'TRAINING TIME': { professional: '训练时间', playerSlang: '训练时间' },
+    day: { professional: '天', playerSlang: '天' },
+    days: { professional: '天', playerSlang: '天' },
     WF: { professional: '逆足', playerSlang: '逆足' },
     SM: { professional: '花式', playerSlang: '花式' },
     Vision: { professional: '视野', playerSlang: '视野' },
@@ -84,7 +90,12 @@
       professional: '展示你的 FC Champions Excellence！给你最喜欢的球员换上豪华新外观，彰显他在俱乐部中的精英地位。',
       playerSlang: '展示你的 FC Champions Excellence！给你最喜欢的球员换上豪华新外观，彰显他在俱乐部中的精英地位。',
     },
+    'Assign a GK to Training Camp Evolutions through the Companion App. When the training session concludes, collect their earned upgrades.': {
+      professional: '通过 Companion App 将一名门将分配到训练营进化。训练结束后，领取他获得的升级。',
+      playerSlang: '通过 Companion App 将一名门将分配到训练营进化。训练结束后，领取他获得的升级。',
+    },
   };
+  const processedCountdownSnapshots = new WeakMap();
 
   function isTargetPage(locationObj = window.location) {
     return Boolean(
@@ -98,6 +109,112 @@
     return Boolean(
       textNode?.parentElement?.closest('img, picture, svg, a[href^="/players/"]')
     );
+  }
+
+  function getCountdownCardRoot(textNode, fallbackContainer) {
+    const parent = textNode?.parentElement;
+    if (!parent) {
+      return fallbackContainer;
+    }
+    const candidates = [];
+    let current = parent;
+    while (current && current !== document.body) {
+      const text = current.textContent || '';
+      const matches =
+        text.match(/\bin\s+\d+\s+(?:days?|months?)\b|(?:解锁到期|使用到期)\s+\d+\s+(?:天|个月)/gi) || [];
+      if (matches.length >= 2) {
+        candidates.push(current);
+      }
+      current = current.parentElement;
+    }
+    return candidates[0] || fallbackContainer;
+  }
+
+  function getCountdownDays(value) {
+    const trimmed = String(value || '').trim();
+    const englishMatch = trimmed.match(/^in\s+(\d+)\s+days?$/i);
+    if (englishMatch) {
+      return { count: englishMatch[1], unit: '天' };
+    }
+    const englishMonthMatch = trimmed.match(/^in\s+(\d+)\s+months?$/i);
+    if (englishMonthMatch) {
+      return { count: englishMonthMatch[1], unit: '个月' };
+    }
+    const translatedMatch = trimmed.match(/^(?:解锁到期|使用到期)\s+(\d+)\s+(天|个月)$/);
+    return translatedMatch
+      ? { count: translatedMatch[1], unit: translatedMatch[2] }
+      : null;
+  }
+
+  function translateCountdownTextNode(textNode, translatedPrefix) {
+    const currentValue = textNode.textContent || '';
+    const countdown = getCountdownDays(currentValue);
+    if (!countdown) {
+      processedCountdownSnapshots.set(textNode, currentValue);
+      return;
+    }
+    const leadingWhitespace = currentValue.match(/^\s*/)?.[0] || '';
+    const trailingWhitespace = currentValue.match(/\s*$/)?.[0] || '';
+    const nextValue =
+      leadingWhitespace +
+      translatedPrefix +
+      ' ' +
+      countdown.count +
+      ' ' +
+      countdown.unit +
+      trailingWhitespace;
+    if (
+      processedCountdownSnapshots.get(textNode) === currentValue &&
+      currentValue === nextValue
+    ) {
+      return;
+    }
+    textNode.textContent = nextValue;
+    processedCountdownSnapshots.set(textNode, textNode.textContent || '');
+  }
+
+  function translateCountdowns(container) {
+    if (!container) {
+      return;
+    }
+    const ownerDocument = container.ownerDocument || document;
+    const countdownNodes = [];
+    const walker = ownerDocument.createTreeWalker(
+      container,
+      NodeFilter.SHOW_TEXT,
+      null
+    );
+    let currentNode = walker.nextNode();
+    while (currentNode) {
+      if (
+        !shouldSkipTextNode(currentNode) &&
+        getCountdownDays(currentNode.textContent)
+      ) {
+        countdownNodes.push(currentNode);
+      }
+      currentNode = walker.nextNode();
+    }
+    const groups = new Map();
+    countdownNodes.forEach((textNode) => {
+      const root = getCountdownCardRoot(textNode, container);
+      if (!groups.has(root)) {
+        groups.set(root, []);
+      }
+      groups.get(root).push(textNode);
+    });
+    groups.forEach((nodes) => {
+      nodes
+        .sort((a, b) => {
+          const position = a.compareDocumentPosition(b);
+          return position & Node.DOCUMENT_POSITION_PRECEDING ? 1 : -1;
+        })
+        .forEach((textNode, index) => {
+          translateCountdownTextNode(
+            textNode,
+            index === 0 ? '解锁到期' : '使用到期'
+          );
+        });
+    });
   }
 
   function translate(root, evolutionsDictionary, options = {}) {
@@ -116,7 +233,33 @@
         ...translationOptions,
         shouldSkipTextNode,
       });
+      translateTrainingDuration(container);
+      translateCountdowns(container);
     });
+  }
+
+  function translateTrainingDuration(container) {
+    if (!container) {
+      return;
+    }
+    const ownerDocument = container.ownerDocument || document;
+    const walker = ownerDocument.createTreeWalker(
+      container,
+      NodeFilter.SHOW_TEXT,
+      null
+    );
+    let currentNode = walker.nextNode();
+    while (currentNode) {
+      const currentValue = currentNode.textContent || '';
+      const matched = currentValue.trim().match(/^(\d+)\s*days?$/i);
+      if (!shouldSkipTextNode(currentNode) && matched) {
+        const leadingWhitespace = currentValue.match(/^\s*/)?.[0] || '';
+        const trailingWhitespace = currentValue.match(/\s*$/)?.[0] || '';
+        currentNode.textContent =
+          leadingWhitespace + matched[1] + ' 天' + trailingWhitespace;
+      }
+      currentNode = walker.nextNode();
+    }
   }
 
   window.wonderfutFutggEvolutionsListTranslator = {
