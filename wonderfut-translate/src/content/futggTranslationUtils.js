@@ -256,8 +256,9 @@
     }
   }
 
-  function findContainers(root, selectors) {
+  function findContainers(root, selectors, options = {}) {
     const containers = new Set();
+    const includeAncestors = options.includeAncestors !== false;
     getBaseNodes(root).forEach((node) => {
       if (!node) {
         return;
@@ -276,6 +277,7 @@
           });
         }
         if (
+          includeAncestors &&
           node.nodeType === Node.ELEMENT_NODE &&
           typeof node.closest === 'function'
         ) {

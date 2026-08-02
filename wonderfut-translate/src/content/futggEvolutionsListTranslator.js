@@ -3,7 +3,6 @@
   const EVOLUTIONS_PAGE_REGEX = /^\/evolutions\/?$/i;
   const EVO_LAB_EVOLUTIONS_PAGE_REGEX = /^\/evo-lab\/evolutions\/?$/i;
   const CONTAINER_SELECTORS = [
-    'main',
     'main h1',
     'main p',
     'main a[href]',
@@ -103,6 +102,50 @@
         (EVOLUTIONS_PAGE_REGEX.test(locationObj.pathname || '') ||
           EVO_LAB_EVOLUTIONS_PAGE_REGEX.test(locationObj.pathname || ''))
     );
+  }
+
+  function isFullPageRoot(root) {
+    return Boolean(
+      !root ||
+        root === document ||
+        root === document.body ||
+        root === document.documentElement ||
+        root.nodeType === Node.DOCUMENT_NODE
+    );
+  }
+
+  function uniqueTopLevelContainers(containers) {
+    return (containers || []).filter((container, index, list) => {
+      return !list.some((other, otherIndex) => {
+        return (
+          otherIndex !== index &&
+          other &&
+          container &&
+          other !== container &&
+          typeof other.contains === 'function' &&
+          other.contains(container)
+        );
+      });
+    });
+  }
+
+  function findTranslationContainers(root) {
+    const containers = new Set(
+      utils.findContainers(root, CONTAINER_SELECTORS, {
+        includeAncestors: isFullPageRoot(root),
+      })
+    );
+
+    if (
+      !isFullPageRoot(root) &&
+      root?.nodeType === Node.ELEMENT_NODE &&
+      typeof root.closest === 'function' &&
+      root.closest('main')
+    ) {
+      containers.add(root);
+    }
+
+    return uniqueTopLevelContainers(Array.from(containers));
   }
 
   function shouldSkipTextNode(textNode) {
@@ -227,7 +270,7 @@
     const translationOptions = { ...options };
     delete translationOptions.extraDictionaries;
     const dictionaries = [evolutionsDictionary, DICTIONARY, ...extraDictionaries];
-    const containers = utils.findContainers(root, CONTAINER_SELECTORS);
+    const containers = findTranslationContainers(root);
     containers.forEach((container) => {
       utils.translateContainer(container, dictionaries, {
         ...translationOptions,

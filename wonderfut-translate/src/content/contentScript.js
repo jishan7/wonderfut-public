@@ -31,6 +31,11 @@
   const LOCATION_CHECK_INTERVAL_MS = 1000;
   const HOMEPAGE_BANNER_ID = 'wonderfut-homepage-banner';
   const AUTO_REFRESH_DELAY_MS = 8000;
+  const FUTGG_EVOLUTIONS_LISTING_REGEX =
+    /^\/(?:evolutions|evo-lab\/evolutions)\/?$/i;
+  const FUTGG_EVOLUTIONS_MUTATION_DELAY_MS = 350;
+  const FUTGG_EVOLUTIONS_BATCH_SIZE = 4;
+  const FUTGG_EVOLUTIONS_BATCH_DELAY_MS = 40;
 
   if (
     !dictionaryLoader ||
@@ -74,6 +79,8 @@
   let autoRefreshStarted = false;
   const pendingTranslationRoots = new Set();
   let pendingTranslationFrame = null;
+  let pendingTranslationSchedulerType = null;
+  let futggEvolutionsBatchTimer = null;
 
   async function ensureDictionaries() {
     if (
@@ -291,8 +298,58 @@
     }
   }
 
+  function isFutggEvolutionsListingPage() {
+    return Boolean(
+      window.location?.hostname?.includes('fut.gg') &&
+        FUTGG_EVOLUTIONS_LISTING_REGEX.test(window.location.pathname || '')
+    );
+  }
+
+  async function translateFutggEvolutionsListingRoot(root) {
+    try {
+      const dictionaries = await ensureDictionaries();
+      futggEvolutionsListTranslator.translate(root, dictionaries.evolutions, {
+        usePlayerSlang: USE_PLAYER_SLANG,
+        showOriginalWithBrackets: SHOW_ORIGINAL_WITH_BRACKETS,
+        extraDictionaries: [
+          dictionaries.sixStat,
+          dictionaries.playstyles,
+          dictionaries.roles,
+          dictionaries.rarity,
+        ],
+      });
+    } catch (error) {
+      console.error('WonderFut FUT.GG evolutions translation failed:', error);
+    }
+  }
+
+  function processFutggEvolutionsRootsInBatches(roots) {
+    if (futggEvolutionsBatchTimer !== null) {
+      window.clearTimeout(futggEvolutionsBatchTimer);
+      futggEvolutionsBatchTimer = null;
+    }
+    const queue = roots.slice();
+    const processNextBatch = () => {
+      futggEvolutionsBatchTimer = null;
+      if (!isFutggEvolutionsListingPage()) {
+        return;
+      }
+      queue.splice(0, FUTGG_EVOLUTIONS_BATCH_SIZE).forEach((node) => {
+        translateFutggEvolutionsListingRoot(node);
+      });
+      if (queue.length) {
+        futggEvolutionsBatchTimer = window.setTimeout(
+          processNextBatch,
+          FUTGG_EVOLUTIONS_BATCH_DELAY_MS
+        );
+      }
+    };
+    processNextBatch();
+  }
+
   function flushPendingTranslations() {
     pendingTranslationFrame = null;
+    pendingTranslationSchedulerType = null;
     const roots = Array.from(pendingTranslationRoots).filter((node, index, list) => {
       return !list.some((other, otherIndex) => {
         return (
@@ -305,34 +362,119 @@
       });
     });
     pendingTranslationRoots.clear();
+    if (isFutggEvolutionsListingPage()) {
+      processFutggEvolutionsRootsInBatches(roots);
+      syncRefreshButtonState();
+      return;
+    }
     roots.forEach((node) => {
       translateRoot(node);
     });
     syncRefreshButtonState();
   }
 
-  function scheduleTranslateRoot(node) {
-    if (!node || node.nodeType !== Node.ELEMENT_NODE) {
+  function cancelPendingTranslationFlush() {
+    if (pendingTranslationFrame === null) {
       return;
     }
-    pendingTranslationRoots.add(node);
+    if (
+      pendingTranslationSchedulerType === 'raf' &&
+      typeof window.cancelAnimationFrame === 'function'
+    ) {
+      window.cancelAnimationFrame(pendingTranslationFrame);
+    } else {
+      window.clearTimeout(pendingTranslationFrame);
+    }
+    pendingTranslationFrame = null;
+    pendingTranslationSchedulerType = null;
+  }
+
+  function schedulePendingTranslationFlush() {
+    if (isFutggEvolutionsListingPage()) {
+      cancelPendingTranslationFlush();
+      pendingTranslationSchedulerType = 'timeout';
+      pendingTranslationFrame = window.setTimeout(
+        flushPendingTranslations,
+        FUTGG_EVOLUTIONS_MUTATION_DELAY_MS
+      );
+      return;
+    }
     if (pendingTranslationFrame !== null) {
       return;
     }
-    pendingTranslationFrame =
-      typeof window.requestAnimationFrame === 'function'
-        ? window.requestAnimationFrame(flushPendingTranslations)
-        : window.setTimeout(flushPendingTranslations, 16);
+    if (typeof window.requestAnimationFrame === 'function') {
+      pendingTranslationSchedulerType = 'raf';
+      pendingTranslationFrame = window.requestAnimationFrame(
+        flushPendingTranslations
+      );
+      return;
+    }
+    pendingTranslationSchedulerType = 'timeout';
+    pendingTranslationFrame = window.setTimeout(flushPendingTranslations, 16);
+  }
+
+  function getTranslationRootForMutation(node) {
+    if (!node || node.nodeType !== Node.ELEMENT_NODE) {
+      return null;
+    }
+    if (isFutggEvolutionsListingPage() && typeof node.closest === 'function') {
+      const scopedContainer = node.closest(
+        'main article, main section, main [role="tablist"], main [class*="filter"], main [class*="require"], main [class*="upgrade"]'
+      );
+      if (scopedContainer) {
+        return scopedContainer;
+      }
+      if (node.parentElement?.closest('main')) {
+        return node.parentElement;
+      }
+    }
+    return node;
+  }
+
+  function scheduleTranslateRoot(node) {
+    const translationRoot = getTranslationRootForMutation(node);
+    if (!translationRoot) {
+      return;
+    }
+    pendingTranslationRoots.add(translationRoot);
+    schedulePendingTranslationFlush();
+  }
+
+  function scheduleAddedNodeTranslation(node) {
+    if (!node || node.nodeType !== Node.ELEMENT_NODE) {
+      return;
+    }
+    if (isFutggEvolutionsListingPage()) {
+      const cardRoots = new Set();
+      if (typeof node.matches === 'function' && node.matches('main article')) {
+        cardRoots.add(node);
+      }
+      if (typeof node.querySelectorAll === 'function') {
+        node.querySelectorAll('main article, article').forEach((article) => {
+          if (article.closest('main')) {
+            cardRoots.add(article);
+          }
+        });
+      }
+      if (cardRoots.size) {
+        cardRoots.forEach((article) => scheduleTranslateRoot(article));
+        return;
+      }
+    }
+    scheduleTranslateRoot(node);
   }
 
   function handleMutations(mutations) {
     mutations.forEach((mutation) => {
       if (mutation.type === 'attributes') {
+        if (isFutggEvolutionsListingPage()) {
+          return;
+        }
         scheduleTranslateRoot(mutation.target);
         return;
       }
       mutation.addedNodes.forEach((node) => {
-        scheduleTranslateRoot(node);
+        scheduleAddedNodeTranslation(node);
       });
     });
   }
@@ -605,8 +747,6 @@
     observer.observe(document.body, {
       childList: true,
       subtree: true,
-      attributes: true,
-      attributeFilter: ['aria-label', 'placeholder', 'title', 'value'],
     });
     monitorEvolutionPageChanges();
   }

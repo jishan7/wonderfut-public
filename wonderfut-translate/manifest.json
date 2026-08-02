@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "文达WonderFut-攻略站翻译机网络优化版",
   "description": "将FC UT 攻略站 Futbin Futgg 的英文名词翻译为中文.",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "content_scripts": [
     {
       "matches": [
